@@ -65,16 +65,6 @@ class FinanceDataSchema:
     def one_hot_encoding_features(self) -> List[str]:
         features = [
             self.col_company_response,
-            self.col_consumer_consent_provided,
-            self.col_submitted_via,
-        ]
-        return features
-
-    @property
-    def one_hot_encoding_features(self) -> List[str]:
-        features = [
-            self.col_company_response,
-            self.col_consumer_consent_provided,
             self.col_submitted_via,
         ]
         return features
@@ -149,7 +139,8 @@ class FinanceDataSchema:
     def unwanted_columns(self) -> List[str]:
         features = [
             self.col_complaint_id,
-            self.col_sub_product, self.col_complaint_what_happened]
+            self.col_sub_product, self.col_complaint_what_happened,
+            self.col_consumer_consent_provided]
 
         return features
 
