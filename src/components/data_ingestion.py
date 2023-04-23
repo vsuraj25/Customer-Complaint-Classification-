@@ -67,7 +67,7 @@ class DataIngestion:
             for index in range(1, len(required_interval)):
                 from_date, to_date = required_interval[index - 1], required_interval[index]
                 logging.debug(f"Generating data download url between {from_date} and {to_date}")
-                datasource_url: str = self.data_ingestion_config.data_source_url
+                datasource_url: str = self.data_ingestion_config.datasource_url
                 url = datasource_url.replace("<todate>", to_date).replace("<fromdate>", from_date)
                 logging.debug(f"Url: {url}")
                 file_name = f"{self.data_ingestion_config.file_name}_{from_date}_{to_date}.json"

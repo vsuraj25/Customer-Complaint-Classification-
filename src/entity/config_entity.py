@@ -6,6 +6,7 @@ from src.exception import ComplaintException
 import os
 import sys 
 
+## Data Ingestion Constants
 DATA_INGESTION_DIR = 'data_ingestion'
 DATA_INGESTION_DOWNLOADED_DATA_DIR = 'downloaded_files'
 DATA_INGESTION_FILE_NAME = 'src'
@@ -18,6 +19,11 @@ DATA_INGESTION_DATA_SOURCE_URL = f"https://www.consumerfinance.gov/data-research
                       f"?date_received_max=<todate>&date_received_min=<fromdate>" \
                       f"&field=all&format=json"
 
+## Data Validation Constants
+DATA_VALIDATION_DIR = "data_validation"
+DATA_VALIDATION_FILE_NAME = "finance_complaint"
+DATA_VALIDATION_ACCEPTED_DATA_DIR = "accepted_data"
+DATA_VALIDATION_REJECTED_DATA_DIR = "rejected_data"
 
 @dataclass
 ## Training Pipeline
@@ -61,10 +67,22 @@ class DataIngestionConfig:
             self.failed_download_dir = os.path.join(self.data_ingestion_dir, DATA_INGESTION_FAILED_DIR)
             self.file_name = DATA_INGESTION_FILE_NAME
             self.feature_store_dir = os.path.join(data_ingestion_master_dir, DATA_INGESTION_FEATURE_STORE_DIR)
-            self.data_source_url = DATA_INGESTION_DATA_SOURCE_URL
+            self.datasource_url = DATA_INGESTION_DATA_SOURCE_URL
         
         except Exception as e:
             ComplaintException(e, sys)
+
+class DataValidationConfig:
+
+    def __init__(self,training_pipeline_config:TrainingPipelineConfig) -> None:
+        try:
+            data_validation_dir = os.path.join(training_pipeline_config.artifact_dir,
+                                                   DATA_VALIDATION_DIR)
+            self.accepted_data_dir = os.path.join(data_validation_dir, DATA_VALIDATION_ACCEPTED_DATA_DIR)
+            self.rejected_data_dir = os.path.join(data_validation_dir, DATA_VALIDATION_REJECTED_DATA_DIR)
+            self.file_name=DATA_VALIDATION_FILE_NAME
+        except Exception as e:
+            raise ComplaintException(e,sys)
 
 
         
