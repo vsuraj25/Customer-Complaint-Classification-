@@ -1,0 +1,1 @@
+{"class":"src.ml.feature.DerivedFeatureGenerator","timestamp":1682364274438,"sparkVersion":"3.2.1","uid":"DerivedFeatureGenerator_4f98ab871bf6","paramMap":{"inputCols":["date_sent_to_company","date_received"],"outputCols":["diff_in_days"]},"defaultParamMap":{}}
