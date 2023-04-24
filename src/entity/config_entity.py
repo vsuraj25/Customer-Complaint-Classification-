@@ -25,6 +25,16 @@ DATA_VALIDATION_FILE_NAME = "finance_complaint"
 DATA_VALIDATION_ACCEPTED_DATA_DIR = "accepted_data"
 DATA_VALIDATION_REJECTED_DATA_DIR = "rejected_data"
 
+## Data Transformation Constants
+DATA_TRANSFORMATION_DIR = "data_transformation"
+DATA_TRANSFORMATION_PIPELINE_DIR = "transformed_pipeline"
+DATA_TRANSFORMATION_TRAIN_DIR = "train"
+DATA_TRANSFORMATION_FILE_NAME = "finance_complaint"
+DATA_TRANSFORMATION_TEST_DIR = "test"
+DATA_TRANSFORMATION_TEST_SIZE = 0.3
+
+
+
 @dataclass
 ## Training Pipeline
 class TrainingPipelineConfig:
@@ -75,6 +85,19 @@ class DataValidationConfig:
             self.file_name=DATA_VALIDATION_FILE_NAME
         except Exception as e:
             raise ComplaintException(e,sys)
+
+class DataTransformationConfig:
+
+    def __init__(self,training_pipeline_config:TrainingPipelineConfig) -> None:
+        try:
+            data_transformation_dir = os.path.join(training_pipeline_config.artifact_dir,DATA_TRANSFORMATION_DIR)
+            self.transformed_train_dir = os.path.join( data_transformation_dir, DATA_TRANSFORMATION_TRAIN_DIR)
+            self.transformed_test_dir = os.path.join(data_transformation_dir, DATA_TRANSFORMATION_TEST_DIR)
+            self.export_pipeline_dir = os.path.join(data_transformation_dir, DATA_TRANSFORMATION_PIPELINE_DIR)
+            self.file_name = DATA_TRANSFORMATION_FILE_NAME
+            self.test_size = DATA_TRANSFORMATION_TEST_SIZE
+        except Exception as e:
+            raise FinanceException(e,sys)
 
 
         

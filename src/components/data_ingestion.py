@@ -188,7 +188,7 @@ class DataIngestion:
         """
         try:
             logging.info(f"Writing metadata info into metadata file.")
-            metadata_info = DataIngestionMetaData(metadata_file_path=self.data_ingestion_config.metadata_file_path)
+            metadata_info = DataIngestionMetadata(metadata_file_path=self.data_ingestion_config.metadata_file_path)
 
             metadata_info.write_metadata_info(from_date=self.data_ingestion_config.from_date,
                                               to_date=self.data_ingestion_config.to_date,
