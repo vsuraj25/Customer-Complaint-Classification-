@@ -1,7 +1,8 @@
 from src.entity.artifact_entity import (DataIngestionArtifact, DataValidationArtifact,
-                    DataTransformationArtifact, ModelTrainerArtifact)
+                    DataTransformationArtifact, ModelTrainerArtifact, ModelEvaluationArtifact)
 from src.entity.config_entity import (DataIngestionConfig, TrainingPipelineConfig, DataValidationConfig, 
-                                    DataTransformationConfig, ModelTrainerConfig)
+                                    DataTransformationConfig, ModelTrainerConfig, ModelEvaluationConfig)
+from src.components.model_evaluation import ModelEvaluation
 from src.components.data_ingestion import DataIngestion
 from src.components.data_validation import DataValidation
 from src.components.data_transformation import DataTransformation
@@ -59,12 +60,30 @@ class TrainingPipeline:
         except Exception as e:
             raise ComplaintException(e, sys)
 
+    def start_model_evaluation(self, data_validation_artifact, model_trainer_artifact) -> ModelEvaluationArtifact:
+        try:
+            model_eval_config = ModelEvaluationConfig(training_pipeline_config=self.training_pipeline_config)
+            model_eval = ModelEvaluation(data_validation_artifact=data_validation_artifact,
+                                        model_trainer_artifact=model_trainer_artifact,
+                                        model_eval_config=model_eval_config
+                                        )
+            return model_eval.initiate_model_evaluation()
+        except Exception as e:
+            raise ComplaintException(e, sys)
+
     def start(self):
         try:
             data_ingestion_artifact = self.start_data_ingestion()
             data_validation_artifact = self.start_data_validation(data_ingestion_artifact=data_ingestion_artifact)
             data_transformation_artifact = self.start_data_transformation(data_validation_artifact=data_validation_artifact)
             model_trainer_artifact = self.start_model_trainer(data_transformation_artifact=data_transformation_artifact)
+            model_eval_artifact = self.start_model_evaluation(data_validation_artifact=data_validation_artifact,
+                                                              model_trainer_artifact=model_trainer_artifact
+                                                              )
+
+            if model_eval_artifact.model_accepted:
+                pass
+
         except Exception as e:
             logging.error(e)
             raise ComplaintException(e,sys)
