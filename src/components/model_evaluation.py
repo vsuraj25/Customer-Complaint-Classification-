@@ -4,6 +4,7 @@ from src.exception import ComplaintException
 from src.logger import logging as  logging
 import sys
 from pyspark.sql import DataFrame
+from pyspark.ml.feature import StringIndexerModel
 from pyspark.ml.pipeline import PipelineModel
 from src.config.spark_manager import spark_session
 from src.utils import get_score

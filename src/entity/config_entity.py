@@ -57,6 +57,10 @@ MODEL_EVALUATION_REPORT_FILE_NAME = "evaluation_report"
 MODEL_EVALUATION_THRESHOLD_VALUE = 0.002
 MODEL_EVALUATION_METRIC_NAMES = ["f1"]
 
+MODEL_PUSHER_SAVED_MODEL_DIRS = "saved_models"
+MODEL_PUSHER_DIR = "model_pusher"
+MODEL_PUSHER_MODEL_NAME = MODEL_TRAINER_MODEL_NAME
+
 @dataclass
 ## Training Pipeline
 class TrainingPipelineConfig:
@@ -141,5 +145,12 @@ class ModelEvaluationConfig:
         self.model_evaluation_dir = os.path.join(training_pipeline_config.artifact_dir, MODEL_EVALUATION_DIR)
         self.threshold = MODEL_EVALUATION_THRESHOLD_VALUE
         self.metric_list = MODEL_EVALUATION_METRIC_NAMES
+
+class ModelPusherConfig:
+
+    def __init__(self,training_pipeline_config:TrainingPipelineConfig):
+        self.pusher_model_dir = os.path.join(training_pipeline_config.artifact_dir,
+                                                MODEL_PUSHER_DIR,"model",MODEL_PUSHER_MODEL_NAME)
+        self.saved_model_dir = MODEL_PUSHER_SAVED_MODEL_DIRS
         
 
